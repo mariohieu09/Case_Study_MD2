@@ -120,6 +120,7 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
     @Override
     public void addProductToCart(Account acc, String name) {
         accounts = rf.readFile(DataBase);
+        productList = rf.readFile(ProductFile);
         Product product = new Product();
         boolean existence = checkifTheproductExist(acc, name);
         if(existence){
@@ -151,7 +152,7 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
         user = accounts.stream()
                 .filter(x -> x.getAccountName().equals(acc.getAccountName()))
                 .findAny().orElse(user);
-        productList = ((User)user).getCart().getList();
+        List<Product> list = ((User)user).getCart().getList();
         String temp = "";
         do {
             System.out.println("What order do you want to sort: \n1.Sort by name \n2.Sort by price");
@@ -159,11 +160,11 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
         }while (Validate.sortValidate(temp));
         int choice = (int)temp.charAt(0) - 48;
         if(choice == 1) {
-            Collections.sort(productList, Comparator.comparing(Product::getName));
+            Collections.sort(list, Comparator.comparing(Product::getName));
             System.out.println("Sort by name: ");
             productList.forEach(System.out::println);
         }else{
-            Collections.sort(productList, Comparator.comparing(Product :: getPrice));
+            Collections.sort(list, Comparator.comparing(Product :: getPrice));
             System.out.println("Sort by price: ");
             productList.forEach(System.out::println);
         }
@@ -259,9 +260,9 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
             temp = accounts.stream()
                     .filter(x -> x.getAccountName().equals(acc.getAccountName()))
                     .findAny().orElse(temp);
-            productList = ((User) temp).getCart().getList();
+            List<Product> list = ((User) temp).getCart().getList();
             Product product = new Product();
-            product = productList.stream().filter(x -> x.getName().equals(productName)).findAny().orElse(product);
+            product = list.stream().filter(x -> x.getName().equals(productName)).findAny().orElse(product);
             if(!(product.getName() == null)){
                  existed = true;
             }

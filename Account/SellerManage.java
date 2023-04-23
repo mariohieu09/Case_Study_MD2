@@ -59,8 +59,8 @@ public class SellerManage implements SellerListManage, eWalletManage {
     @Override
     public boolean increasePrice(Account acc, String productName) {
         accounts = rf.readFile(DataBase);
-        boolean isIncrease = false;
         productList = rf.readFile(ProductFile);
+        boolean isIncrease = false;
         boolean isExist = checkifTheProductExist(productName);
         if(isExist) {
             boolean isInSellList = checkIfTheProductInSellList(acc, productName);
@@ -70,6 +70,7 @@ public class SellerManage implements SellerListManage, eWalletManage {
                 sc.nextLine();
                 double currentAmount;
                 double afterRaise = 0;
+                List<Product> list;
                 for(Product product : productList){
                     if(product.getName().equals(productName)){
                         currentAmount = product.getPrice();
@@ -78,22 +79,16 @@ public class SellerManage implements SellerListManage, eWalletManage {
                         break;
                     }
                 }
-                List<Product> sellList = new ArrayList<Product>();
                 for(Account account : accounts){
                     if(account.getAccountName().equals(acc.getAccountName())){
-                        sellList = ((Seller)account).getSellerList().getList();
-                        break;
-                    }
-                }
-                for(Product product : sellList){
-                    if(product.getName().equals(productName)){
-                        product.setPrice(afterRaise);
-                        break;
-                    }
-                }
-                for(Account account : accounts){
-                    if(account.getAccountName().equals(acc.getAccountName())){
-                        ((Seller)account).getSellerList().setList(sellList);
+                        list = ((Seller)account).getSellerList().getList();
+                        for(Product product : list){
+                            if (product.getName().equals(productName)){
+                                product.setPrice(afterRaise);
+                                break;
+                            }
+                        }
+                        ((Seller)account).getSellerList().setList(list);
                         break;
                     }
                 }
@@ -192,11 +187,8 @@ public class SellerManage implements SellerListManage, eWalletManage {
                               break;
                           }
                       }
-                  }
-              }
-              for(Account account : accounts){
-                  if(account.getAccountName().equals(acc.getAccountName())){
                       ((Seller)account).getSellerList().setList(list);
+                      break;
                   }
               }
               wf.writeFile(ProductFile, productList);
@@ -236,9 +228,9 @@ public class SellerManage implements SellerListManage, eWalletManage {
         temp = accounts.stream()
                 .filter(x -> x.getAccountName().equals(acc.getAccountName()))
                 .findAny().get();
-        productList = ((Seller)temp).getSellerList().getList();
+        List<Product> list = ((Seller)temp).getSellerList().getList();
         boolean isExist = false;
-        for(Product product : productList){
+        for(Product product : list){
             if(product.getName().equals(productName)){
                 isExist = true;
                 break;
@@ -251,9 +243,9 @@ public class SellerManage implements SellerListManage, eWalletManage {
         Account seller = accounts.stream().
                 filter(x -> x.getAccountName().equals(acc.getAccountName()))
                 .findAny().get();
-        productList = ((Seller)seller).getSellerList().getList();
+        List<Product> list = ((Seller)seller).getSellerList().getList();
         System.out.println("Here is your sell list: ");
-        for(Product product : productList){
+        for(Product product : list){
             System.out.println(product);
             System.out.println("Quantity: " + product.getQuantity());
         }

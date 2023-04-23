@@ -31,7 +31,7 @@ public class Main {
                     }
                 }
                 case 2 -> {
-//                  String name;
+//                    String name;
                     System.out.println("Enter account name: ");
                     String Acountname = sc.nextLine();
                     System.out.println("Enter password: ");
@@ -123,15 +123,23 @@ public class Main {
                                                     System.out.println("Success remove!");
                                                 }
                                             }
-                                            case 3 ->{
+                                            case 3 -> {
                                                 System.out.println("Enter the product name you want to pay: ");
                                                 String name = sc.nextLine();
-                                                boolean isPaid = userManage.payment(user, name);
-                                                if(isPaid){
-                                                  boolean isExchange =  userManage.exchange(user, name);
-                                                  if(isExchange){
-                                                      System.out.println("Success!");
-                                                  }
+                                                String confirm;
+                                                do {
+                                                    System.out.println("Confirm paid?   1.Yes      2.Cancel");
+                                                    confirm = sc.nextLine();
+                                                } while (!(ValidateChoice.confirmValidate(confirm)));
+                                                int isConfirm = (int) confirm.charAt(0) - 48;
+                                                if (isConfirm == 1) {
+                                                    boolean isPaid = userManage.payment(user, name);
+                                                    if (isPaid) {
+                                                        boolean isExchange = userManage.exchange(user, name);
+                                                        if (isExchange) {
+                                                            System.out.println("Success!");
+                                                        }
+                                                    }
                                                 }
                                             }
                                             case 4 -> {
