@@ -16,6 +16,7 @@ public class ProductDisplay {
     static File productFile = new File("Product.txt");
     public static void display(){
         productList = rf.readFile(productFile);
+        System.out.println("Product list: ");
         for(Product product : productList){
             System.out.println(product);
             System.out.println("Quantity: " + product.getQuantity());

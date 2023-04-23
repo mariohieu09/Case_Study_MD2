@@ -87,6 +87,8 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
                             break;
                         }
                     }
+                    wf.writeFile(DataBase, accounts);
+                    wf.writeFile(ProductFile, productList);
                     beenPaid = true;
                 }else{
                     System.out.println("The quantity is not enough or the product is no longer exist in the list!");
@@ -99,25 +101,21 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
         }else{
             System.out.println("The product is not in ur cart!");
         }
-        wf.writeFile(DataBase, accounts);
-        wf.writeFile(ProductFile, productList);
         return beenPaid;
     }
 
     @Override
     public void addProductToCart(Account acc, String name) {
         accounts = rf.readFile(DataBase);
-        productList = rf.readFile(ProductFile);
         Product product = new Product();
         boolean existence = checkifTheproductExist(acc, name);
         if(existence){
             product = productList.stream()
                     .filter(x -> x.getName().equals(name))
                     .findAny().get();
-            Account user = new User();
-            user = accounts.stream()
-                    .filter(x -> x.getAccountName().equals(name))
-                    .findAny().orElse(user);
+            Account user = accounts.stream()
+                    .filter(x -> x.getAccountName().equals(acc.getAccountName()))
+                    .findAny().get();
             productList = ((User)user).getCart().getList();
             productList.add(product);
             for(Account account : accounts){
@@ -190,9 +188,19 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
                 double after = current + product.getPrice();
                 ((Seller)account).geteWallet().setAmount(after);
                 isExchange = true;
+                List<Product> list = ((Seller)account).getSellerList().getList();
+                for(Product product1 : list){
+                    if(product1.getName().equals(productName)){
+                        int currentQ = product1.getQuantity();
+                        int afterQ = currentQ - 1;
+                        product1.setQuantity(afterQ);
+                        break;
+                    }
+                }
                 break;
             }
         }
+
         wf.writeFile(DataBase, accounts);
         return isExchange;
     }

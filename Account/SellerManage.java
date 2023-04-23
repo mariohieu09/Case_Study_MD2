@@ -97,6 +97,8 @@ public class SellerManage implements SellerListManage, eWalletManage {
                         break;
                     }
                 }
+                wf.writeFile(DataBase, accounts);
+                wf.writeFile(ProductFile, productList);
                 isIncrease = true;
             }else{
                 System.out.println("The product is not in your sell list!");
@@ -104,8 +106,6 @@ public class SellerManage implements SellerListManage, eWalletManage {
         }else{
             System.out.println("Can't find the product!");
         }
-        wf.writeFile(DataBase, accounts);
-        wf.writeFile(ProductFile, productList);
         return isIncrease;
     }
 
@@ -153,6 +153,8 @@ public class SellerManage implements SellerListManage, eWalletManage {
                         break;
                     }
                 }
+                wf.writeFile(DataBase, accounts);
+                wf.writeFile(ProductFile, productList);
                 isDecrease = true;
             }else{
                 System.out.println("The product is not in your sell list!");
@@ -160,8 +162,6 @@ public class SellerManage implements SellerListManage, eWalletManage {
         }else{
             System.out.println("Can't find the product!");
         }
-        wf.writeFile(DataBase, accounts);
-        wf.writeFile(ProductFile, productList);
         return  isDecrease;
     }
 
@@ -199,14 +199,14 @@ public class SellerManage implements SellerListManage, eWalletManage {
                       ((Seller)account).getSellerList().setList(list);
                   }
               }
+              wf.writeFile(ProductFile, productList);
+              wf.writeFile(DataBase, accounts);
           }else {
               System.out.println("The product is not in your cart!");
           }
         }else{
             System.out.println("Can't find the product!");
         }
-        wf.writeFile(ProductFile, productList);
-        wf.writeFile(DataBase, accounts);
     }
 
     @Override

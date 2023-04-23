@@ -101,7 +101,6 @@ public class Main {
                                     while (cartCheck != 1){
                                         userManage.displayTheAmount(user);
                                         userManage.displayTheCart(user);
-                                        System.out.println("The product list: ");
                                         ProductDisplay.display();
                                         do {
                                             System.out.println("1.Adding new product to your cart      2.Remove the product        3.Payment          4.Deposit the amount           0.Back to main menu");

@@ -33,10 +33,10 @@ public class Invoice implements Serializable {
     @Override
     public String toString() {
         return "Paid Check{" +
-                "product name= " + productName +
-                "price= " + price +
-                "Buyer= " + Buyer +
-                "date=" + date +
+                " product name= " + productName +
+                " price= " + price +
+                " Buyer= " + Buyer +
+                " date= " + date +
                 '}';
     }
 }
