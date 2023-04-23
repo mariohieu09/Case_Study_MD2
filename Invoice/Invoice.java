@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Invoice implements Serializable {
+    private static final long serialVersionUID = 9045863543269746292L;
 
     LocalDateTime date;
 
@@ -18,6 +19,10 @@ public class Invoice implements Serializable {
         this.price = price;
         this.date = LocalDateTime.now();
         this.Buyer = acc.getAccountName();
+    }
+
+    public Invoice() {
+        this.date = LocalDateTime.now();
     }
 
     public LocalDateTime getDate() {

@@ -17,7 +17,7 @@ public class AccountManage {
     public boolean SignUp(){
         boolean isSignUp = false;
         accounts = rf.readFile(DataBase);
-        System.out.println("Who do you want to sign up: \n1. Sign up as User  \n2.Sign up as Seller");
+        System.out.println("Who do you want to sign up: \n1.Sign up as User  \n2.Sign up as Seller");
         int choice = sc.nextInt();
         sc.nextLine();
         String accountName;

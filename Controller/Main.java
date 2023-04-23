@@ -31,16 +31,17 @@ public class Main {
                     }
                 }
                 case 2 -> {
+//                    String name;
                     System.out.println("Enter account name: ");
-                    String name = sc.nextLine();
+                    String Acountname = sc.nextLine();
                     System.out.println("Enter password: ");
                     String password = sc.nextLine();
-                    int Role = accountManage.SignIn(name, password);
+                    int Role = accountManage.SignIn(Acountname, password);
                     if(Role == 1){
                         int sellerCheck = 0;
                         while(sellerCheck != 1){
                         SellerManage sellerManage = new SellerManage();
-                        Account seller = new Seller(name, password);
+                        Account seller = new Seller(Acountname, password);
                         ProductDisplay.display();
                         System.out.println("1.Check the sell list           2.Sort the list and display        3.Exit");
                         int n = sc.nextInt();
@@ -61,18 +62,18 @@ public class Main {
                                         case 1 -> sellerManage.addNewProductToSell(seller);
                                         case 2 -> {
                                             System.out.println("Enter the product name: ");
-                                            name = sc.nextLine();
-                                            sellerManage.increasePrice(seller, name);
+                                            String Productname = sc.nextLine();
+                                            sellerManage.increasePrice(seller, Productname);
                                         }
                                         case 3 -> {
                                             System.out.println("Enter the product name: ");
-                                            name = sc.nextLine();
-                                            sellerManage.decreasePrice(seller, name);
+                                            String Productname = sc.nextLine();
+                                            sellerManage.decreasePrice(seller, Productname);
                                         }
                                         case 4 -> {
                                             System.out.println("Enter the product you want to reduce the quantity: ");
-                                            name = sc.nextLine();
-                                            sellerManage.reduceQuantity(seller, name);
+                                            String Productname = sc.nextLine();
+                                            sellerManage.reduceQuantity(seller, Productname);
                                         }
                                         case 0 -> check = 1;
                                     }
@@ -88,7 +89,7 @@ public class Main {
                         while(UserCheck != 1){
                             System.out.println("Welcome!");
                             UserManage userManage = new UserManage();
-                            Account user = new User(name, password);
+                            Account user = new User(Acountname, password);
                             ProductDisplay.display();
                             do {
                                 System.out.println("1.Check your shopping cart        2.Search the product        3.Sort the list and display       4.Display invoice history          0.Exit");
@@ -110,12 +111,12 @@ public class Main {
                                         switch (cartChoice){
                                             case 1 -> {
                                                 System.out.println("Enter the product name: ");
-                                                name = sc.nextLine();
+                                                String name = sc.nextLine();
                                                 userManage.addProductToCart(user, name);
                                             }
                                             case 2 -> {
                                                 System.out.println("Enter the product name: ");
-                                                name = sc.nextLine();
+                                                String name = sc.nextLine();
                                                 boolean isRemove = userManage.removeProduct(user, name);
                                                 if(isRemove){
                                                     System.out.println("Success remove!");
@@ -123,7 +124,7 @@ public class Main {
                                             }
                                             case 3 ->{
                                                 System.out.println("Enter the product name you want to pay: ");
-                                                name = sc.nextLine();
+                                                String name = sc.nextLine();
                                                 boolean isPaid = userManage.payment(user, name);
                                                 if(isPaid){
                                                   boolean isExchange =  userManage.exchange(user, name);
@@ -145,9 +146,13 @@ public class Main {
                                         }
                                     }
                                 }
-                                case 2 -> {}
+                                case 2 -> {
+                                    System.out.println("Enter the product name you want to search!");
+                                    String name = sc.nextLine();
+                                    userManage.searchProduct(user, name);
+                                }
                                 case 3 -> ProductDisplay.SortTheList();
-                                case 4 -> userManage.displayThePaidHistory(user);
+                                case 4 -> userManage.displayThePaidHistory(user.getAccountName());
                                 case 0 -> UserCheck = 1;
                             }
                         }

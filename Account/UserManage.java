@@ -55,6 +55,7 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
         accounts = rf.readFile(DataBase);
         boolean exist = checkIfTheProductInCart(acc, productName);
         productList = rf.readFile(ProductFile);
+        Invoice invoice = new Invoice();
         if(exist){
             boolean canPaid = checkingTheAmount(acc, productName);
             Product product = productList.stream()
@@ -63,19 +64,12 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
             if(canPaid){
                 if(checkQuantity(productName)){
                     double price = product.getPrice();
-                    List<Invoice> invoiceList = new ArrayList<>();
-                    for (Account account : accounts) {
-                        if (account.getAccountName().equals(acc.getAccountName())) {
-                            double currentAmount = account.eWallet.getAmount();
-                            double afterPaid = currentAmount - price;
-                            account.eWallet.setAmount(afterPaid);
-                            Invoice iv = createInvoice(acc, productName, price);
-                            display(iv);
-                            invoiceList = ((User) account).getInvoiceList();
-                            invoiceList.add(iv);
-                            List<Product> list = ((User)account).getCart().getList();
-                            list.remove(product);
-                            ((User)account).getCart().setList(list);
+                    double currentAmount;
+                    for(Account account : accounts){
+                        if(account.getAccountName().equals(acc.getAccountName())){
+                            currentAmount = ((User)account).geteWallet().getAmount();
+                            currentAmount -= price;
+                            ((User)account).geteWallet().setAmount(currentAmount);
                             break;
                         }
                     }
@@ -87,8 +81,7 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
                             break;
                         }
                     }
-                    wf.writeFile(DataBase, accounts);
-                    wf.writeFile(ProductFile, productList);
+                    invoice = new Invoice(acc, productName, price);
                     beenPaid = true;
                 }else{
                     System.out.println("The quantity is not enough or the product is no longer exist in the list!");
@@ -101,7 +94,27 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
         }else{
             System.out.println("The product is not in ur cart!");
         }
+        if(beenPaid){
+            display(invoice);
+            wf.writeFile(DataBase, accounts);
+            wf.writeFile(ProductFile, productList);
+            addNewInvoice(acc, invoice);
+            removeProduct(acc, productName);
+        }
         return beenPaid;
+    }
+    public void addNewInvoice(Account acc, Invoice e){
+        accounts = rf.readFile(DataBase);
+        List<Invoice> list;
+        for(Account account : accounts){
+            if(account.getAccountName().equals(acc.getAccountName())){
+                list = ((User)account).getInvoiceList();
+                list.add(e);
+                ((User)account).setInvoiceList(list);
+                break;
+            }
+        }
+        wf.writeFile(DataBase, accounts);
     }
 
     @Override
@@ -296,13 +309,27 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
     }
 
     @Override
-    public void displayThePaidHistory(Account acc) {
-        accounts = rf.readFile(DataBase);
-        List<Invoice> invoiceList;
-        Account account = accounts.stream().
-                filter(x -> x.getAccountName().equals(acc.getAccountName()))
-                .findAny().get();
-        invoiceList = ((User)account).getInvoiceList();
+    public void displayThePaidHistory(String accountName) {
+        List<Account> list = rf.readFile(DataBase);
+        List<Invoice> invoiceList = new ArrayList<Invoice>();
+        for(Account account : list){
+            if(account.getAccountName().equals(accountName)){
+                invoiceList = ((User)account).getInvoiceList();
+                break;
+            }
+        }
         invoiceList.forEach(System.out::println);
+    }
+    public void searchProduct(Account acc , String productName){
+        productList = rf.readFile(ProductFile);
+       boolean exist = checkifTheproductExist(acc, productName);
+       if(exist){
+           Product product = productList.stream().
+                   filter(x -> x.getName().equals(productName))
+                   .findAny().get();
+           System.out.println(product);
+       }else{
+           System.out.println("Can't find the product!");
+       }
     }
 }

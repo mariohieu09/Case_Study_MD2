@@ -54,4 +54,5 @@ public class User extends Account {
     public eWallet geteWallet(){
         return this.eWallet;
     }
+
 }
