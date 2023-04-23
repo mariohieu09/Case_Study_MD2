@@ -31,7 +31,7 @@ public class Main {
                     }
                 }
                 case 2 -> {
-//                    String name;
+//                  String name;
                     System.out.println("Enter account name: ");
                     String Acountname = sc.nextLine();
                     System.out.println("Enter password: ");
@@ -42,6 +42,7 @@ public class Main {
                         while(sellerCheck != 1){
                         SellerManage sellerManage = new SellerManage();
                         Account seller = new Seller(Acountname, password);
+                        System.out.println("Welcome " + sellerManage.getAccountName(seller));
                         ProductDisplay.display();
                         System.out.println("1.Check the sell list           2.Sort the list and display        3.Exit");
                         int n = sc.nextInt();
@@ -87,9 +88,9 @@ public class Main {
                         int UserCheck = 0;
                         String choose;
                         while(UserCheck != 1){
-                            System.out.println("Welcome!");
                             UserManage userManage = new UserManage();
                             Account user = new User(Acountname, password);
+                            System.out.println("Welcome " + userManage.getAccountName(user));
                             ProductDisplay.display();
                             do {
                                 System.out.println("1.Check your shopping cart        2.Search the product        3.Sort the list and display       4.Display invoice history          0.Exit");
@@ -156,6 +157,8 @@ public class Main {
                                 case 0 -> UserCheck = 1;
                             }
                         }
+                    }else{
+                        System.out.println("The account is not exist!");
                     }
                 }
                  case 3 -> {

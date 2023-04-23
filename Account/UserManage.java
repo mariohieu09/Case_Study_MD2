@@ -332,4 +332,11 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
            System.out.println("Can't find the product!");
        }
     }
+    public String getAccountName(Account acc){
+        accounts = rf.readFile(DataBase);
+        Account account = accounts.stream()
+                .filter(x -> x.getAccountName().equals(acc.getAccountName()))
+                .findAny().get();
+        return account.getAccountName();
+    }
 }

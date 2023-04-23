@@ -2,6 +2,7 @@ package Account;
 
 import FileIO.ReadFile;
 import FileIO.WriteFile;
+import Validate.Validate;
 
 import java.io.File;
 import java.util.List;
@@ -23,8 +24,10 @@ public class AccountManage {
         String accountName;
         String password = null;
         String inAppName = null;
-        System.out.println("Enter new account name: ");
-        accountName = sc.nextLine();
+        do {
+            System.out.println("Enter new account name(6 Character long): ");
+            accountName = sc.nextLine();
+        }while (!(Validate.Signup_validate(accountName)));
         boolean isExist = checkTheAccountInDataBase(accountName);
         if (!isExist) {
             System.out.println("Enter new password: ");

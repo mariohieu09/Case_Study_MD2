@@ -266,4 +266,11 @@ public class SellerManage implements SellerListManage, eWalletManage {
                 .findAny().get();
         System.out.println(((Seller)seller).geteWallet().getAmount());
     }
+    public String getAccountName(Account acc){
+        accounts = rf.readFile(DataBase);
+        Account account = accounts.stream()
+                .filter(x -> x.getAccountName().equals(acc.getAccountName()))
+                .findAny().get();
+        return account.getAccountName();
+    }
 }

@@ -32,18 +32,21 @@ public class ProductDisplay {
         int choice = (int)choose.charAt(0) - 48;
         if(choice == 1) {
             Collections.sort(productList, Comparator.comparing(Product::getName));
+            System.out.println("Sort by name: ");
             for(Product product : productList){
                 System.out.println(product);
                 System.out.println("Quantity: " + product.getQuantity());
             }
         }else if(choice == 2){
             Collections.sort(productList, Comparator.comparing(Product :: getPrice));
+            System.out.println("Sort by price: ");
             for(Product product : productList){
                 System.out.println(product);
                 System.out.println("Quantity: " + product.getQuantity());
             }
         }else{
             Collections.sort(productList, Comparator.comparing(Product :: getQuantity));
+            System.out.println("Sort by quantity: ");
             for(Product product : productList){
                 System.out.println(product);
                 System.out.println("Quantity: " + product.getQuantity());
