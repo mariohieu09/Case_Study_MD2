@@ -284,7 +284,7 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
         Account user = accounts.stream()
                 .filter(x -> x.getAccountName().equals(acc.getAccountName()))
                 .findAny().get();
-        System.out.println(((User)user).eWallet.getAmount());
+        System.out.println(((User)user).eWallet.getAmount() + "$");
     }
     public boolean checkQuantity(String productName){
         productList = rf.readFile(ProductFile);
@@ -313,6 +313,7 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
     public void displayThePaidHistory(String accountName) {
         List<Account> list = rf.readFile(DataBase);
         List<Invoice> invoiceList = new ArrayList<Invoice>();
+        System.out.println("Here is your paid history: ");
         for(Account account : list){
             if(account.getAccountName().equals(accountName)){
                 invoiceList = ((User)account).getInvoiceList();
@@ -320,6 +321,7 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
             }
         }
         invoiceList.forEach(System.out::println);
+        System.out.println("_______________________________________________");
     }
     public void searchProduct(Account acc , String productName){
         productList = rf.readFile(ProductFile);
@@ -339,5 +341,81 @@ public class UserManage implements ShoppingCartManage, eWalletManage, PaidCheckM
                 .filter(x -> x.getAccountName().equals(acc.getAccountName()))
                 .findAny().get();
         return account.getAccountName();
+    }
+    public double bet(Account acc) {
+        System.out.println("Enter the amount you want to bet: ");
+        double betAm = sc.nextDouble();
+        sc.nextLine();
+        boolean good = checkIftheAmountIsGood(acc, betAm);
+        accounts = rf.readFile(DataBase);
+        if(good) {
+            for (Account account : accounts) {
+                if (account.getAccountName().equals(acc.getAccountName())) {
+                    double current = account.eWallet.getAmount();
+                    account.eWallet.setAmount(current - betAm);
+                    int currentRoll = ((User)account).getGiftRoller();
+                    ((User)account).setGiftRoller(currentRoll - 1);
+                    break;
+                }
+            }
+        }else{
+            System.out.println("Your amount is not enough for the bet! Please deposit more money!");
+        }
+        wf.writeFile(DataBase, accounts);
+        return betAm;
+    }
+    public void win(Account acc, double bet) {
+        ReadFile rf = new ReadFile();
+        accounts = rf.readFile(DataBase);
+        for (Account account : accounts) {
+            if (account.getAccountName().equals(acc.getAccountName())) {
+                double current = account.eWallet.getAmount();
+                double win = bet * 2;
+                account.eWallet.setAmount(current + win);
+                break;
+            }
+        }
+        wf.writeFile(DataBase, accounts);
+    }
+    public void Gift(Account acc){
+        ReadFile rf = new ReadFile();
+        accounts = rf.readFile(DataBase);
+        for(Account account : accounts){
+            if(account.getAccountName().equals(acc.getAccountName())){
+                int current = ((User)account).getGiftRoller();
+                current += 1;
+                ((User)account).setGiftRoller(current);
+                break;
+            }
+        }
+        wf.writeFile(DataBase, accounts);
+    }
+    public int displayRoll(Account acc){
+        ReadFile rf = new ReadFile();
+        accounts = rf.readFile(DataBase);
+        int currentRoll = 0;
+        for(Account account : accounts) {
+            if(account.getAccountName().equals(acc.getAccountName())){
+                currentRoll = ((User)account).getGiftRoller();
+                break;
+            }
+        }
+        System.out.println("Your rolls : " + currentRoll);
+        return currentRoll;
+    }
+    public boolean checkIftheAmountIsGood(Account acc, double bet){
+        accounts = rf.readFile(DataBase);
+        double current = 0;
+        for(Account account : accounts){
+            if(account.getAccountName().equals(acc.getAccountName())){
+                current = account.eWallet.getAmount();
+                break;
+            }
+        }
+        if(current > bet){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

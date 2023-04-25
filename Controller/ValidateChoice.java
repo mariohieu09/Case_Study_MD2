@@ -7,6 +7,7 @@ public class ValidateChoice {
     private static final String CHOICE = "^[12340]$";
     private static final String SORT_CHOICE = "^[123]$";
     private static final String CONFIRM_CHOICE = "^[12]$";
+    private static final String USER_CHOICE = "^[123450]$";
 
     public static boolean menuChoice(String choice){
         Pattern pattern = Pattern.compile(MENU_CHOICE);
@@ -26,6 +27,11 @@ public class ValidateChoice {
     }
     public static boolean confirmValidate(String choice){
         Pattern pattern = Pattern.compile(CONFIRM_CHOICE);
+        boolean isMatch = pattern.matcher(choice).matches();
+        return isMatch;
+    }
+    public static boolean User_Choice(String choice){
+        Pattern pattern = Pattern.compile(USER_CHOICE);
         boolean isMatch = pattern.matcher(choice).matches();
         return isMatch;
     }

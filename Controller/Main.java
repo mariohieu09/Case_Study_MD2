@@ -3,6 +3,7 @@ package Controller;
 import Account.Account;
 import Account.Seller;
 import Account.*;
+import MiniGame.MiniGame;
 import Product.Product;
 import Product.ProductDisplay;
 
@@ -13,6 +14,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         AccountManage accountManage  = new AccountManage();
+        MiniGame game = new MiniGame();
         while (true){
             ProductDisplay.display();
             String menuChoice;
@@ -31,7 +33,6 @@ public class Main {
                     }
                 }
                 case 2 -> {
-//                    String name;
                     System.out.println("Enter account name: ");
                     String Acountname = sc.nextLine();
                     System.out.println("Enter password: ");
@@ -93,9 +94,9 @@ public class Main {
                             System.out.println("Welcome " + userManage.getAccountName(user));
                             ProductDisplay.display();
                             do {
-                                System.out.println("1.Check your shopping cart        2.Search the product        3.Sort the list and display       4.Display invoice history          0.Exit");
+                                System.out.println("1.Check your shopping cart        2.Search the product        3.Sort the list and display       4.Display invoice history         5.MiniGame       0.Exit");
                                 choose = sc.nextLine();
-                            }while (!(ValidateChoice.Choice(choose)));
+                            }while (!(ValidateChoice.User_Choice(choose)));
                             int userChoice = (int)choose.charAt(0) - 48;
                             switch (userChoice){
                                 case 1 -> {
@@ -137,6 +138,8 @@ public class Main {
                                                     if (isPaid) {
                                                         boolean isExchange = userManage.exchange(user, name);
                                                         if (isExchange) {
+                                                            System.out.println("You have been gifted 1 chance to the Roll!");
+                                                            userManage.Gift(user);
                                                             System.out.println("Success!");
                                                         }
                                                     }
@@ -162,6 +165,10 @@ public class Main {
                                 }
                                 case 3 -> ProductDisplay.SortTheList();
                                 case 4 -> userManage.displayThePaidHistory(user.getAccountName());
+                                case 5 -> {
+                                    userManage.displayTheAmount(user);
+                                    game.start(user);
+                                }
                                 case 0 -> UserCheck = 1;
                             }
                         }

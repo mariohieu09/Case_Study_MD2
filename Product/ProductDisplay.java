@@ -19,7 +19,10 @@ public class ProductDisplay {
         System.out.println("Product list: ");
         for(Product product : productList){
             System.out.println(product);
-            System.out.println("Quantity: " + product.getQuantity());
+            System.out.println("""
+                    Quantity: """ + product.getQuantity() + """ 
+                    
+                    """);
         }
     }
     public static void SortTheList(){

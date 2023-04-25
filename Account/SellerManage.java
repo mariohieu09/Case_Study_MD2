@@ -247,7 +247,7 @@ public class SellerManage implements SellerListManage, eWalletManage {
         System.out.println("Here is your sell list: ");
         for(Product product : list){
             System.out.println(product);
-            System.out.println("Quantity: " + product.getQuantity());
+            System.out.println("Quantity: " + product.getQuantity() + "$");
         }
     }
 

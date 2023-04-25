@@ -10,6 +10,7 @@ public class User extends Account {
     private static final long serialVersionUID = 9045863543269746292L;
     ShoppingCart cart = new ShoppingCart();
     List<Invoice> invoiceList;
+    private int GiftRoller = 0;
 
 
     public User(String name, String accountName, String password) {
@@ -20,7 +21,6 @@ public class User extends Account {
         this.eWallet = new eWallet();
         this.cart = new ShoppingCart();
         this.invoiceList = new ArrayList<Invoice>();
-
     }
 
     public User(String accountName, String password) {
@@ -55,4 +55,11 @@ public class User extends Account {
         return this.eWallet;
     }
 
+    public int getGiftRoller() {
+        return GiftRoller;
+    }
+
+    public void setGiftRoller(int giftRoller) {
+        GiftRoller = giftRoller;
+    }
 }
